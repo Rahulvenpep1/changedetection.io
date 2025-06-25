@@ -12,7 +12,6 @@ services:
     environment:
       - PORT=5000
       - LOGGER_LEVEL=TRACE
-      - WEBDRIVER_URL=http://browser-chrome:4444/wd/hub
       - PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
       - HTTP_PROXY=socks5h://10.10.1.10:1080
       - HTTPS_PROXY=socks5h://10.10.1.10:1080
@@ -31,8 +30,6 @@ services:
     restart: unless-stopped
 
     depends_on:
-      browser-chrome:
-        condition: service_started
       sockpuppetbrowser:
         condition: service_started
 
@@ -47,18 +44,6 @@ services:
       - SCREEN_HEIGHT=1024
       - SCREEN_DEPTH=16
       - MAX_CONCURRENT_CHROME_PROCESSES=10
-
-  browser-chrome:
-    hostname: browser-chrome
-    image: selenium/standalone-chrome:4
-    environment:
-      - VNC_NO_PASSWORD=1
-      - SCREEN_WIDTH=1920
-      - SCREEN_HEIGHT=1080
-      - SCREEN_DEPTH=24
-    volumes:
-      - /dev/shm:/dev/shm
-    restart: unless-stopped
 
 volumes:
   changedetection-data:
